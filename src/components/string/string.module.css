@@ -1,0 +1,9 @@
+.form {
+  display: flex;
+}
+
+.field {
+  display: flex;
+  gap: 16px;
+  margin-top: 120px;
+}

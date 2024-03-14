@@ -7,37 +7,43 @@ interface InputProps extends React.HTMLProps<HTMLInputElement> {
   isLimitText?: boolean;
 }
 
-export const Input: React.FC<InputProps> = ({
-  placeholder = "Введите текст",
-  extraClass = "",
-  type = "text",
-  maxLength,
-  max,
-  isLimitText = false,
-  ...rest
-}) => {
-  const limitText =
-    type === "text"
-      ? `Максимум — ${maxLength} символа`
-      : `Максимальное число — ${max}`;
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      placeholder = "Введите текст",
+      extraClass = "",
+      type = "text",
+      maxLength,
+      max,
+      isLimitText = false,
+      ...rest
+    },
+    ref
+  ) => {
+    const limitText =
+      type === "text"
+        ? `Максимум — ${maxLength} символа`
+        : `Максимальное число — ${max}`;
 
-  return (
-    <div className={`${styles.content} ${extraClass}`}>
-      <input
-        className={`${styles.input} text text_type_input text_color_input`}
-        placeholder={placeholder}
-        type={type}
-        maxLength={maxLength}
-        max={max}
-        {...rest}
-      />
-      {isLimitText && (
-        <span
-          className={`text text_type_input-lim text_color_input mt-2 ml-8 ${styles.limit}`}
-        >
-          {limitText}
-        </span>
-      )}
-    </div>
-  );
-};
+    return (
+      <div className={`${styles.content} ${extraClass}`}>
+        <input
+          ref={ref}
+          className={`${styles.input} text text_type_input text_color_input`}
+          placeholder={placeholder}
+          type={type}
+          maxLength={maxLength}
+          max={max}
+          {...rest}
+        />
+        {isLimitText && (
+          <span
+            className={`text text_type_input-lim text_color_input mt-2 ml-8 ${styles.limit}`}
+          >
+            {limitText}
+          </span>
+        )}
+      </div>
+    );
+  }
+);
