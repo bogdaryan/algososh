@@ -1,0 +1,27 @@
+.controlPanel {
+  display: flex;
+  align-items: center;
+}
+
+.inputs {
+  display: flex;
+  gap: 40px;
+  margin-right: 52px;
+}
+
+.middleBtns {
+  display: flex;
+  gap: 12px;
+  margin-right: 77px;
+}
+
+.field {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 58px;
+}
+
+.btn {
+  width: 210px;
+}

@@ -1,0 +1,31 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 120px;
+}
+
+.header,
+.footer {
+  display: grid;
+  column-gap: 12px;
+}
+
+.header {
+  grid-template-columns: 204px repeat(4, 1fr);
+}
+
+.footer {
+  grid-template-columns: 204px repeat(2, 1fr);
+}
+
+.field {
+  display: flex;
+}
+
+.circleBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-right: 16px;
+}
