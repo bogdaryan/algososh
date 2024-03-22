@@ -46,7 +46,8 @@ export const FibonacciPage: React.FC = () => {
           <Input
             type="number"
             isLimitText={true}
-            max={20}
+            max={19}
+            value={input}
             extraClass="mr-12"
             onChange={(e: FormEvent<HTMLInputElement>) =>
               setInput(Number(e.currentTarget.value))

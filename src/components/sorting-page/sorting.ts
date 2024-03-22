@@ -2,7 +2,7 @@ import { SetStateAction } from "react";
 import { Direction } from "../../types/direction";
 import { ElementStates } from "../../types/element-states";
 import { TColumn } from "./types";
-import { setDelay, swap } from "../../utils /utils";
+import { setDelay, swap } from "../../utils/utils";
 
 const MIN_ARRAY_LENGTH = 3;
 const MAX_ARRAY_LENGTH = 17;
