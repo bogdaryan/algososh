@@ -11,20 +11,26 @@ export const StringComponent: React.FC = () => {
   const [input, setInput] = useState("");
   const [steps, setSteps] = useState<string[][] | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const startAlgorithm = (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const newSteps = reverseStringWithSteps(input);
     setSteps(newSteps);
     setCurrentStepIndex(0);
 
-    if (!newSteps.length) return;
+    if (!newSteps.length) {
+      setLoading(false);
+      return;
+    }
 
     let index = 0;
 
     const intervalId = setInterval(() => {
       if (index >= newSteps.length - 1) {
         clearInterval(intervalId);
+        setLoading(false);
         return;
       }
 
@@ -45,7 +51,12 @@ export const StringComponent: React.FC = () => {
               setInput(e.currentTarget.value)
             }
           />
-          <Button onClick={startAlgorithm} text="Развернуть" />
+          <Button
+            onClick={startAlgorithm}
+            text="Развернуть"
+            disabled={!input || loading}
+            isLoader={loading}
+          />
         </form>
         <div className={styles.field}>
           {steps?.[currentStepIndex].map((char, index) => {

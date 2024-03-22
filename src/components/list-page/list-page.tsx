@@ -224,7 +224,11 @@ export const ListPage: React.FC = () => {
             <Button
               text="Добавить по индексу"
               linkedList="big"
-              onClick={() => addByIndex(valueInput, +indexInput)}
+              onClick={() => {
+                if (+indexInput >= 0 && +indexInput <= list.length - 1) {
+                  addByIndex(valueInput, +indexInput);
+                }
+              }}
               disabled={
                 !valueInput ||
                 !indexInput ||
@@ -233,14 +237,20 @@ export const ListPage: React.FC = () => {
                 isLoading.delHead ||
                 isLoading.addTail ||
                 isLoading.delByIdx ||
-                list.length >= linkedList.current.getSizeLimit()
+                list.length >= linkedList.current.getSizeLimit() ||
+                +indexInput < 0 ||
+                +indexInput > list.length - 1
               }
               isLoader={isLoading.addByIdx}
             />
             <Button
               text="Удалить по индексу"
               linkedList="big"
-              onClick={() => deleteByIndex(+indexInput)}
+              onClick={() => {
+                if (+indexInput >= 0 && +indexInput <= list.length - 1) {
+                  deleteByIndex(+indexInput);
+                }
+              }}
               disabled={
                 !indexInput ||
                 !list.length ||
@@ -248,7 +258,9 @@ export const ListPage: React.FC = () => {
                 isLoading.addTail ||
                 isLoading.addByIdx ||
                 isLoading.delHead ||
-                isLoading.delTail
+                isLoading.delTail ||
+                +indexInput < 0 ||
+                +indexInput > list.length - 1
               }
               isLoader={isLoading.delByIdx}
             />

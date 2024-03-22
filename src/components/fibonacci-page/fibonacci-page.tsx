@@ -15,23 +15,29 @@ export type TCirclesState = {
 
 export const FibonacciPage: React.FC = () => {
   const [input, setInput] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [steps, setSteps] = useState<number[][] | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const startAlgorithm = (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const newSteps = fibonacciWithSteps(input);
 
     setSteps(newSteps);
     setCurrentStepIndex(0);
 
-    if (!newSteps.length) return;
+    if (!newSteps.length) {
+      setLoading(false);
+      return;
+    }
 
     let index = 0;
 
     const intervalId = setInterval(() => {
       if (index >= newSteps.length - 1) {
         clearInterval(intervalId);
+        setLoading(false);
         return;
       }
 
@@ -53,7 +59,12 @@ export const FibonacciPage: React.FC = () => {
               setInput(Number(e.currentTarget.value))
             }
           />
-          <Button onClick={startAlgorithm} text="Рассчитать" />
+          <Button
+            onClick={startAlgorithm}
+            text="Рассчитать"
+            disabled={!input || input > 19 || input < 0 ? true : false}
+            isLoader={loading}
+          />
         </form>
         <div className={styles.field}>
           {steps?.[currentStepIndex].map((char, index) => {
