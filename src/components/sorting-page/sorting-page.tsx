@@ -5,51 +5,48 @@ import styles from "./sorting-page.module.css";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
+import { TColumn } from "./types";
+import { bubbleSort, generateRandomArray, selectionSort } from "./sorting";
 import { Column } from "../ui/column/column";
-import { ElementStates } from "../../types/element-states";
-import { bubbleSort, newRandomColumns, selectionSort } from "./sorting";
-
-export type TColumns = {
-  index: number;
-  state?: ElementStates;
-};
 
 export const SortingPage: React.FC = () => {
-  const [columns, setColumns] = useState<TColumns[]>([]);
-  const [selectedSorting, setSelectedSorting] = useState<string>("bubble");
-  const [isSorting, setIsSorting] = useState<boolean>(false);
+  const [array, setArray] = useState<TColumn[]>([]);
+  const [isSelectionChecked, setIsSelectionChecked] = useState(true);
+  const [isAscLoading, setIsAscLoading] = useState(false);
+  const [isDescLoading, setIsDescLoading] = useState(false);
 
   useEffect(() => {
-    newRandomColumns(setColumns);
+    getNewArray();
   }, []);
 
-  function handleAscendingSort() {
-    if (!isSorting) {
-      setIsSorting(true);
-      if (selectedSorting === "bubble") {
-        bubbleSort(columns, setColumns);
-      } else if (selectedSorting === "selection") {
-        selectionSort(columns, setColumns);
-      }
-    }
-  }
+  const getNewArray = () => {
+    const randomArr = generateRandomArray();
+    setArray(randomArr);
+  };
 
-  function handleDescendingSort() {
-    if (!isSorting) {
-      setIsSorting(true);
-      if (selectedSorting === "bubble") {
-        bubbleSort(columns, setColumns, false);
-      } else if (selectedSorting === "selection") {
-        selectionSort(columns, setColumns, false);
-      }
-    }
-  }
+  const onChangeHandler = () => {
+    setIsSelectionChecked((prev) => !prev);
+  };
 
-  function renderColumns() {
-    return columns.map((column, index) => (
-      <Column index={column.index} key={index} state={column.state} />
-    ));
-  }
+  const ascHandler = async () => {
+    setIsAscLoading(true);
+    if (isSelectionChecked) {
+      await selectionSort(array, Direction.Ascending, setArray);
+    } else {
+      await bubbleSort(array, Direction.Ascending, setArray);
+    }
+    setIsAscLoading(false);
+  };
+
+  const descHandler = async () => {
+    setIsDescLoading(true);
+    if (isSelectionChecked) {
+      await selectionSort(array, Direction.Descending, setArray);
+    } else {
+      await bubbleSort(array, Direction.Descending, setArray);
+    }
+    setIsDescLoading(false);
+  };
 
   return (
     <SolutionLayout title="Сортировка массива">
@@ -60,15 +57,17 @@ export const SortingPage: React.FC = () => {
               label="Выбор"
               name="sorting"
               value="selection"
-              checked={selectedSorting === "selection"}
-              onChange={() => setSelectedSorting("selection")}
+              checked={isSelectionChecked}
+              onChange={onChangeHandler}
+              disabled={isAscLoading || isDescLoading}
             />
             <RadioInput
               label="Пузырёк"
               name="sorting"
               value="bubble"
-              checked={selectedSorting === "bubble"}
-              onChange={() => setSelectedSorting("bubble")}
+              checked={!isSelectionChecked}
+              onChange={onChangeHandler}
+              disabled={isAscLoading || isDescLoading}
             />
           </div>
           <div className={styles.middleBtns}>
@@ -76,25 +75,32 @@ export const SortingPage: React.FC = () => {
               text="По возрастанию"
               extraClass={styles.btn}
               sorting={Direction.Ascending}
-              onClick={handleAscendingSort}
-              disabled={isSorting}
+              onClick={ascHandler}
+              isLoader={isAscLoading}
+              disabled={isDescLoading}
             />
             <Button
               text="По убыванию"
               extraClass={styles.btn}
               sorting={Direction.Descending}
-              onClick={handleDescendingSort}
-              disabled={isSorting}
+              onClick={descHandler}
+              isLoader={isDescLoading}
+              disabled={isAscLoading}
             />
           </div>
           <Button
-            onClick={() => newRandomColumns(setColumns)}
             text="Новый массив"
             extraClass={styles.btn}
-            disabled={isSorting}
+            onClick={getNewArray}
+            disabled={isAscLoading || isDescLoading}
           />
         </section>
-        <section className={styles.field}>{columns && renderColumns()}</section>
+        <section className={styles.field}>
+          {array &&
+            array.map((column, index) => (
+              <Column index={column.value} state={column.state} key={index} />
+            ))}
+        </section>
       </section>
     </SolutionLayout>
   );
