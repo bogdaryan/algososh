@@ -1,0 +1,11 @@
+.form {
+  display: flex;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  row-gap: 48px;
+  column-gap: 16px;
+  margin-top: 48px;
+}

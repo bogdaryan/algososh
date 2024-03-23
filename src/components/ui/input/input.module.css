@@ -6,6 +6,7 @@
 }
 
 .input {
+  max-width: 377px;
   outline: none;
   border: 1px solid var(--text-input-placeholder);
   border-radius: var(--common-border-radius);
