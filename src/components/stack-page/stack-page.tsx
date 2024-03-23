@@ -59,7 +59,7 @@ export const StackPage: React.FC = () => {
   return (
     <SolutionLayout title="Стек">
       <section className="container">
-        <form className="form">
+        <form className="form" onSubmit={(e) => e.preventDefault()}>
           <div className="wrapper">
             <Input
               isLimitText={true}
