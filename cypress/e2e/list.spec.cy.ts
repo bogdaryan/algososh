@@ -1,3 +1,11 @@
+import {
+  CIRCLE_HEAD,
+  CIRCLE_INDEX,
+  CIRCLE_LETTER,
+  CIRCLE_TAIL,
+} from "../constants";
+import { DELAY_IN_MS } from "../../src/constants/delays";
+
 describe('Страница "Список"', () => {
   beforeEach(() => {
     cy.visit("/list");
@@ -10,40 +18,40 @@ describe('Страница "Список"', () => {
       cy.get("li").each(($el, idx) => {
         cy.wrap($el).within(() => {
           if (idx === 0) {
-            cy.get("[class*=circle_head]").should("have.text", "head");
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_HEAD).should("have.text", "head");
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               `${Cypress.env("firstVal")}`
             );
-            cy.get("[class*=circle_index]").should("have.text", `${idx}`);
-            cy.get("[class*=circle_tail]").should("be.empty");
+            cy.get(CIRCLE_INDEX).should("have.text", `${idx}`);
+            cy.get(CIRCLE_TAIL).should("be.empty");
           }
           if (idx === 1) {
-            cy.get("[class*=circle_head]").should("be.empty");
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_HEAD).should("be.empty");
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               `${Cypress.env("secondVal")}`
             );
-            cy.get("[class*=circle_index]").should("have.text", `${idx}`);
-            cy.get("[class*=circle_tail]").should("be.empty");
+            cy.get(CIRCLE_INDEX).should("have.text", `${idx}`);
+            cy.get(CIRCLE_TAIL).should("be.empty");
           }
           if (idx === 2) {
-            cy.get("[class*=circle_head]").should("be.empty");
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_HEAD).should("be.empty");
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               `${Cypress.env("thirdVal")}`
             );
-            cy.get("[class*=circle_index]").should("have.text", `${idx}`);
-            cy.get("[class*=circle_tail]").should("be.empty");
+            cy.get(CIRCLE_INDEX).should("have.text", `${idx}`);
+            cy.get(CIRCLE_TAIL).should("be.empty");
           }
           if (idx === 3) {
-            cy.get("[class*=circle_head]").should("be.empty");
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_HEAD).should("be.empty");
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               `${Cypress.env("fourthVal")}`
             );
-            cy.get("[class*=circle_index]").should("have.text", `${idx}`);
-            cy.get("[class*=circle_tail]").should("have.text", "tail");
+            cy.get(CIRCLE_INDEX).should("have.text", `${idx}`);
+            cy.get(CIRCLE_TAIL).should("have.text", "tail");
           }
         });
       });
@@ -116,25 +124,25 @@ describe('Страница "Список"', () => {
         );
         cy.get("button").contains("Добавить в head").parent().click();
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
 
         cy.get("li").should("have.length", Cypress.env("initLength") + 1);
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
 
         cy.get("li")
           .should("have.length", Cypress.env("initLength") + 1)
           .first()
           .as("firstEl")
           .within(() => {
-            cy.get("[class*=circle_head]").should("have.text", "head");
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_HEAD).should("have.text", "head");
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               Cypress.env("insertedVal")
             );
           });
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
 
         cy.get("@firstEl").within(() => {
           cy.get("[class*=circle_circle]").should(
@@ -156,25 +164,25 @@ describe('Страница "Список"', () => {
         );
         cy.get("button").contains("Добавить в tail").parent().click();
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
 
         cy.get("li").should("have.length", Cypress.env("initLength") + 1);
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
 
         cy.get("li")
           .should("have.length", Cypress.env("initLength") + 1)
           .last()
           .as("lastEl")
           .within(() => {
-            cy.get("[class*=circle_tail]").should("have.text", "tail");
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_TAIL).should("have.text", "tail");
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               Cypress.env("insertedVal")
             );
           });
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
 
         cy.get("@lastEl").within(() => {
           cy.get("[class*=circle_circle]").should(
@@ -207,13 +215,13 @@ describe('Страница "Список"', () => {
         cy.get("[class*=circle_content]")
           .eq(Cypress.env("insertedIdx"))
           .within(() => {
-            cy.get("[class*=circle_letter]").should(
+            cy.get(CIRCLE_LETTER).should(
               "have.text",
               Cypress.env("insertedVal")
             );
           });
 
-        cy.tick(1000);
+        cy.tick(DELAY_IN_MS);
         cy.get("li").each(($el) => {
           cy.wrap($el)
             .find("[class*=circle_circle]")
@@ -231,20 +239,20 @@ describe('Страница "Список"', () => {
         .first()
         .then(($firstEl) => {
           cy.wrap($firstEl)
-            .find("[class*=circle_letter]")
+            .find(CIRCLE_LETTER)
             .then(($firstElLetter) => {
               const firstElVal = $firstElLetter[0].textContent;
               cy.get("button").contains("Удалить из head").parent().click();
               cy.wrap($firstElLetter).should("not.have.text");
               cy.wrap($firstEl)
-                .find("[class*=circle_tail]")
+                .find(CIRCLE_TAIL)
                 .find("[class*=circle_circle]")
                 .should("have.css", "border", "4px solid rgb(210, 82, 225)")
-                .find("[class*=circle_letter]")
+                .find(CIRCLE_LETTER)
                 .should("have.text", firstElVal);
             });
         });
-      cy.tick(1000);
+      cy.tick(DELAY_IN_MS);
       cy.get("li").should("have.length", Cypress.env("initLength") - 1);
     });
 
@@ -255,20 +263,20 @@ describe('Страница "Список"', () => {
         .last()
         .then(($lastEl) => {
           cy.wrap($lastEl)
-            .find("[class*=circle_letter]")
+            .find(CIRCLE_LETTER)
             .then(($lastElLetter) => {
               const lastElVal = $lastElLetter[0].textContent;
               cy.get("button").contains("Удалить из tail").parent().click();
               cy.wrap($lastElLetter).should("not.have.text");
               cy.wrap($lastEl)
-                .find("[class*=circle_tail]")
+                .find(CIRCLE_TAIL)
                 .find("[class*=circle_circle]")
                 .should("have.css", "border", "4px solid rgb(210, 82, 225)")
-                .find("[class*=circle_letter]")
+                .find(CIRCLE_LETTER)
                 .should("have.text", lastElVal);
             });
         });
-      cy.tick(1000);
+      cy.tick(DELAY_IN_MS);
       cy.get("li").should("have.length", Cypress.env("initLength") - 1);
     });
 

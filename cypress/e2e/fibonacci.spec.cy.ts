@@ -1,3 +1,7 @@
+import { CIRCLE_INDEX, CIRCLE_LETTER } from "../constants";
+
+import { SHORT_DELAY_IN_MS } from "../../src/constants/delays";
+
 describe('Страница "Последовательность Фибоначчи"', () => {
   beforeEach(() => {
     cy.visit("/fibonacci");
@@ -27,84 +31,84 @@ describe('Страница "Последовательность Фибонач�
       .each(($el, idx) => {
         if (idx === 0)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "0");
-            cy.get("p[class*=circle_index]").should("have.text", "0");
+            cy.get(CIRCLE_LETTER).should("have.text", "0");
+            cy.get(CIRCLE_INDEX).should("have.text", "0");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("li")
       .should("have.length", "2")
       .each(($el, idx) => {
         if (idx === 1)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "1");
-            cy.get("p[class*=circle_index]").should("have.text", "1");
+            cy.get(CIRCLE_LETTER).should("have.text", "1");
+            cy.get(CIRCLE_INDEX).should("have.text", "1");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("li")
       .should("have.length", "3")
       .each(($el, idx) => {
         if (idx === 2)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "1");
-            cy.get("p[class*=circle_index]").should("have.text", "2");
+            cy.get(CIRCLE_LETTER).should("have.text", "1");
+            cy.get(CIRCLE_INDEX).should("have.text", "2");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("li")
       .should("have.length", "4")
       .each(($el, idx) => {
         if (idx === 3)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "2");
-            cy.get("p[class*=circle_index]").should("have.text", "3");
+            cy.get(CIRCLE_LETTER).should("have.text", "2");
+            cy.get(CIRCLE_INDEX).should("have.text", "3");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("li")
       .should("have.length", "5")
       .each(($el, idx) => {
         if (idx === 4)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "3");
-            cy.get("p[class*=circle_index]").should("have.text", "4");
+            cy.get(CIRCLE_LETTER).should("have.text", "3");
+            cy.get(CIRCLE_INDEX).should("have.text", "4");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("li")
       .should("have.length", "6")
       .each(($el, idx) => {
         if (idx === 5)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "5");
-            cy.get("p[class*=circle_index]").should("have.text", "5");
+            cy.get(CIRCLE_LETTER).should("have.text", "5");
+            cy.get(CIRCLE_INDEX).should("have.text", "5");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("li")
       .should("have.length", "7")
       .each(($el, idx) => {
         if (idx === 6)
           cy.wrap($el).within(() => {
-            cy.get("p[class*=circle_letter]").should("have.text", "8");
-            cy.get("p[class*=circle_index]").should("have.text", "6");
+            cy.get(CIRCLE_LETTER).should("have.text", "8");
+            cy.get(CIRCLE_INDEX).should("have.text", "6");
           });
       });
 
-    cy.tick(500);
+    cy.tick(SHORT_DELAY_IN_MS);
 
     cy.get("button").contains("Рассчитать");
   });

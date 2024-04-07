@@ -1,3 +1,6 @@
+import { CIRCLE_LETTER, CIRCLE_INDEX, CIRCLE_STRING } from "../constants";
+import { DELAY_IN_MS } from "../../src/constants/delays";
+
 describe('Страница "Стек"', () => {
   beforeEach(() => {
     cy.visit("/stack");
@@ -27,12 +30,12 @@ describe('Страница "Стек"', () => {
         "border",
         "4px solid rgb(210, 82, 225)"
       );
-      cy.get("[class*=circle_string]").should("have.text", "top");
-      cy.get("[class*=circle_letter]").should("have.text", "3");
-      cy.get("[class*=circle_index]").should("have.text", "0");
+      cy.get(CIRCLE_STRING).should("have.text", "top");
+      cy.get(CIRCLE_LETTER).should("have.text", "3");
+      cy.get(CIRCLE_INDEX).should("have.text", "0");
     });
 
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
 
     cy.get("[class*=circle_content]").within(() => {
       cy.get("[class*=circle_circle]").should(
@@ -52,21 +55,16 @@ describe('Страница "Стек"', () => {
       .should("be.disabled");
     cy.get("input").type("3");
     cy.get("button").contains("Добавить").parent().as("addBtn").click();
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
     cy.get("input").type("4");
     cy.get("@addBtn").click();
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
     cy.get("li").as("list").should("have.length", "2");
     cy.get("@delBtn").should("be.enabled").click();
 
     cy.get("@list");
-    // .within(() => {
-    //   cy.get("[class*=circle_circle]")
-    //     .last()
-    //     .should("have.css", "border", "4px solid rgb(210, 82, 225)");
-    // });
 
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
     cy.get("@list").should("have.length", 1);
   });
 
@@ -80,13 +78,13 @@ describe('Страница "Стек"', () => {
     cy.get("button").contains("Добавить").parent().as("addBtn");
     cy.get("input").type("1");
     cy.get("@addBtn").click();
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
     cy.get("input").type("2");
     cy.get("@addBtn").click();
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
     cy.get("input").type("3");
     cy.get("@addBtn").click();
-    cy.tick(1000);
+    cy.tick(DELAY_IN_MS);
     cy.get("ul").as("list").should("not.be.empty");
     cy.get("@clearBtn").click();
     cy.get("@list").should("be.empty");
