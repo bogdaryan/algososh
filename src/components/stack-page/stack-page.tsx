@@ -91,22 +91,23 @@ export const StackPage: React.FC = () => {
             }
           />
         </form>
-        <div className="field">
+        <ul className="field">
           {stackItems &&
             stackItems.map((i, index) => (
-              <Circle
-                letter={i}
-                index={index}
-                head={stack.current.lastIndex === index ? "top" : null}
-                state={
-                  stack.current.lastIndex === index
-                    ? lastElementState
-                    : ElementStates.Default
-                }
-                key={index}
-              />
+              <li key={index}>
+                <Circle
+                  letter={i}
+                  index={index}
+                  head={stack.current.lastIndex === index ? "top" : null}
+                  state={
+                    stack.current.lastIndex === index
+                      ? lastElementState
+                      : ElementStates.Default
+                  }
+                />
+              </li>
             ))}
-        </div>
+        </ul>
       </section>
     </SolutionLayout>
   );

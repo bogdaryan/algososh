@@ -112,27 +112,28 @@ export const QueuePage: React.FC = () => {
             }
           />
         </form>
-        <div className="field">
+        <ul className="field">
           {queueItems &&
             queueItems.map((i, index) => (
-              <Circle
-                letter={i}
-                index={index}
-                head={
-                  !queue.current.isEmpty && index === queue.current.headIdx
-                    ? HEAD
-                    : null
-                }
-                tail={
-                  !queue.current.isEmpty && index === queue.current.tailIdx
-                    ? TAIL
-                    : null
-                }
-                state={getCircleState(queue.current, index)}
-                key={index}
-              />
+              <li key={index}>
+                <Circle
+                  letter={i}
+                  index={index}
+                  head={
+                    !queue.current.isEmpty && index === queue.current.headIdx
+                      ? HEAD
+                      : null
+                  }
+                  tail={
+                    !queue.current.isEmpty && index === queue.current.tailIdx
+                      ? TAIL
+                      : null
+                  }
+                  state={getCircleState(queue.current, index)}
+                />
+              </li>
             ))}
-        </div>
+        </ul>
       </section>
     </SolutionLayout>
   );
