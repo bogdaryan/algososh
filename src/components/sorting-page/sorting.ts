@@ -47,84 +47,86 @@ const setElementsStateSelection = (
   return updatedArray;
 };
 
-export const selectionSort = async (
-  arrayToSort: TColumn[],
-  sortingDirection: Direction,
-  updateArrayState: React.Dispatch<SetStateAction<TColumn[]>>
-) => {
-  const { length } = arrayToSort;
+export const selectionSort = (
+  arr: TColumn[],
+  direction: Direction
+): TColumn[][] | null => {
+  const { length } = arr;
+  if (!length) return null;
+
+  const sortMatrix: TColumn[][] = [];
+  let stepArray: TColumn[];
+
   for (let i = 0; i < length - 1; i++) {
-    let minIndex = i;
-    if (sortingDirection === Direction.Ascending) {
-      for (let j = i + 1; j < length; j++) {
-        await setDelay(1000);
-        updateArrayState(
-          setElementsStateSelection(arrayToSort, i, j, minIndex)
-        );
-        if (arrayToSort[minIndex].value > arrayToSort[j].value) minIndex = j;
-      }
-    } else {
-      for (let j = i + 1; j < length; j++) {
-        await setDelay(1000);
-        updateArrayState(
-          setElementsStateSelection(arrayToSort, i, j, minIndex)
-        );
-        if (arrayToSort[minIndex].value < arrayToSort[j].value) minIndex = j;
-      }
+    let selectedIdx = i;
+
+    for (let j = i + 1; j < length; j++) {
+      stepArray = setElementsStateSelection(arr, i, j, selectedIdx);
+      sortMatrix.push(stepArray);
+      if (
+        direction === Direction.Ascending
+          ? arr[selectedIdx].value > arr[j].value
+          : arr[selectedIdx].value < arr[j].value
+      )
+        selectedIdx = j;
     }
-    if (arrayToSort[i].value !== arrayToSort[minIndex].value)
-      swap(arrayToSort, i, minIndex);
+
+    if (arr[i].value !== arr[selectedIdx].value) swap(arr, i, selectedIdx);
   }
-  await setDelay(1000);
-  updateArrayState(setElementsStateSelection(arrayToSort));
+  stepArray = setElementsStateSelection(arr);
+  sortMatrix.push(stepArray);
+
+  return sortMatrix;
 };
 
 const setElementsStateBubble = (
-  array: TColumn[],
-  currentIndexJ: number = array.length,
-  currentIndexI: number = array.length
+  arr: TColumn[],
+  idxJ: number = arr.length,
+  idxI: number = arr.length
 ) => {
-  const { length } = array;
+  const { length } = arr;
   let state: ElementStates;
-  const updatedArray = array.map((element, index) => {
-    if (index === currentIndexJ || index === currentIndexJ + 1) {
+  const newArray = arr.map((el, idx) => {
+    if (idx === idxJ || idx === idxJ + 1) {
       state = ElementStates.Changing;
-    } else if (index > length - currentIndexI - 1) {
+    } else if (idx > length - idxI - 1) {
       state = ElementStates.Modified;
     } else {
       state = ElementStates.Default;
     }
     return {
-      ...element,
+      ...el,
       state,
     };
   });
-  return updatedArray;
+
+  return newArray;
 };
 
-export const bubbleSort = async (
-  arrayToSort: TColumn[],
-  sortingDirection: Direction,
-  updateArrayState: React.Dispatch<SetStateAction<TColumn[]>>
-) => {
-  const { length } = arrayToSort;
+export const bubbleSort = (
+  arr: TColumn[],
+  direction: Direction
+): TColumn[][] | null => {
+  const { length } = arr;
+  if (!length) return null;
+
+  const sortMatrix: TColumn[][] = [];
+  let stepArray: TColumn[];
+
   for (let i = 0; i < length; i++) {
-    if (sortingDirection === Direction.Ascending) {
-      for (let j = 0; j < length - i - 1; j++) {
-        await setDelay(1000);
-        updateArrayState(setElementsStateBubble(arrayToSort, j, i));
-        if (arrayToSort[j].value > arrayToSort[j + 1].value)
-          swap(arrayToSort, j, j + 1);
-      }
-    } else {
-      for (let j = 0; j < length - i - 1; j++) {
-        await setDelay(1000);
-        updateArrayState(setElementsStateBubble(arrayToSort, j, i));
-        if (arrayToSort[j].value < arrayToSort[j + 1].value)
-          swap(arrayToSort, j, j + 1);
-      }
+    for (let j = 0; j < length - i - 1; j++) {
+      stepArray = setElementsStateBubble(arr, j, i);
+      sortMatrix.push(stepArray);
+      if (
+        direction === Direction.Ascending
+          ? arr[j].value > arr[j + 1].value
+          : arr[j].value < arr[j + 1].value
+      )
+        swap(arr, j, j + 1);
     }
   }
-  await setDelay(1000);
-  updateArrayState(setElementsStateBubble(arrayToSort));
+  stepArray = setElementsStateBubble(arr);
+  sortMatrix.push(setElementsStateBubble(arr));
+
+  return sortMatrix;
 };

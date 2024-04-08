@@ -17,7 +17,7 @@ import {
   getInitState,
 } from "./utils";
 import { TElement } from "./types";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { CIRCLE } from "../../constants/element-captions";
 
 export const ListPage: React.FC = () => {
@@ -57,7 +57,7 @@ export const ListPage: React.FC = () => {
         clearInterval(timerId);
         setIsLoading((prev) => ({ ...prev, addHead: false }));
       }
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
 
     setValueInput("");
   };
@@ -75,7 +75,7 @@ export const ListPage: React.FC = () => {
         clearInterval(timerId);
         setIsLoading((prev) => ({ ...prev, addTail: false }));
       }
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
 
     setValueInput("");
   };
@@ -87,7 +87,7 @@ export const ListPage: React.FC = () => {
     setTimeout(() => {
       setList(matrix[1]);
       setIsLoading((prev) => ({ ...prev, delHead: false }));
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
 
     setValueInput("");
   };
@@ -99,7 +99,7 @@ export const ListPage: React.FC = () => {
     setTimeout(() => {
       setList(matrix[1]);
       setIsLoading((prev) => ({ ...prev, delTail: false }));
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
 
     setValueInput("");
   };
@@ -117,7 +117,7 @@ export const ListPage: React.FC = () => {
         clearInterval(timerId);
         setIsLoading((prev) => ({ ...prev, addByIdx: false }));
       }
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
 
     setValueInput("");
     setIndexInput("");
@@ -136,7 +136,7 @@ export const ListPage: React.FC = () => {
         clearInterval(timerId);
         setIsLoading((prev) => ({ ...prev, delByIdx: false }));
       }
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
 
     setIndexInput("");
   };
@@ -266,10 +266,10 @@ export const ListPage: React.FC = () => {
             />
           </div>
         </div>
-        <div className={styles.field}>
+        <ul className={styles.field}>
           {list &&
             list.map((el, idx) => (
-              <div key={idx} className={styles.circleBox}>
+              <li key={idx} className={styles.circleBox}>
                 <Circle
                   head={
                     el.head.type === CIRCLE ? (
@@ -298,9 +298,9 @@ export const ListPage: React.FC = () => {
                   state={el.state}
                 />
                 {idx !== list.length - 1 && <ArrowIcon />}
-              </div>
+              </li>
             ))}
-        </div>
+        </ul>
       </section>
     </SolutionLayout>
   );

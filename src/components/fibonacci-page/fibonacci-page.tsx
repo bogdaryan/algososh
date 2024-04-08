@@ -6,7 +6,7 @@ import { Circle } from "../ui/circle/circle";
 import styles from "./fibonacci-page.module.css";
 
 import { fibonacciWithSteps } from "./fibonacci";
-import { DELAY_IN_MS } from "../../constants/delays";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export type TCirclesState = {
   number: number;
@@ -14,7 +14,7 @@ export type TCirclesState = {
 };
 
 export const FibonacciPage: React.FC = () => {
-  const [input, setInput] = useState(0);
+  const [input, setInput] = useState<any>("");
   const [loading, setLoading] = useState(false);
   const [steps, setSteps] = useState<number[][] | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -42,7 +42,7 @@ export const FibonacciPage: React.FC = () => {
       }
 
       setCurrentStepIndex(++index);
-    }, DELAY_IN_MS);
+    }, SHORT_DELAY_IN_MS);
   };
 
   return (
@@ -56,7 +56,7 @@ export const FibonacciPage: React.FC = () => {
             value={input}
             extraClass="mr-12"
             onChange={(e: FormEvent<HTMLInputElement>) =>
-              setInput(Number(e.currentTarget.value))
+              setInput(e.currentTarget.value)
             }
           />
           <Button
@@ -66,11 +66,15 @@ export const FibonacciPage: React.FC = () => {
             isLoader={loading}
           />
         </form>
-        <div className={styles.field}>
+        <ul className={styles.field}>
           {steps?.[currentStepIndex].map((char, index) => {
-            return <Circle letter={char + ""} index={index} key={index} />;
+            return (
+              <li key={index}>
+                <Circle letter={char + ""} index={index} key={index} />;
+              </li>
+            );
           })}
-        </div>
+        </ul>
       </section>
     </SolutionLayout>
   );

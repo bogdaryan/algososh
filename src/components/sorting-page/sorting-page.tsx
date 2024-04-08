@@ -8,6 +8,7 @@ import { Direction } from "../../types/direction";
 import { TColumn } from "./types";
 import { bubbleSort, generateRandomArray, selectionSort } from "./sorting";
 import { Column } from "../ui/column/column";
+import { DELAY_IN_MS } from "../../constants/delays";
 
 export const SortingPage: React.FC = () => {
   const [array, setArray] = useState<TColumn[]>([]);
@@ -28,24 +29,50 @@ export const SortingPage: React.FC = () => {
     setIsSelectionChecked((prev) => !prev);
   };
 
-  const ascHandler = async () => {
+  const ascHandler = () => {
     setIsAscLoading(true);
-    if (isSelectionChecked) {
-      await selectionSort(array, Direction.Ascending, setArray);
-    } else {
-      await bubbleSort(array, Direction.Ascending, setArray);
-    }
-    setIsAscLoading(false);
+
+    const matrix = isSelectionChecked
+      ? selectionSort(array, Direction.Ascending)
+      : bubbleSort(array, Direction.Ascending);
+
+    if (!matrix) return setIsAscLoading(false);
+
+    let step = 0;
+    setArray(matrix[step]);
+
+    const timerId = setInterval(() => {
+      if (step < matrix.length - 1) {
+        step++;
+        setArray(matrix[step]);
+      } else {
+        clearInterval(timerId);
+        setIsAscLoading(false);
+      }
+    }, DELAY_IN_MS);
   };
 
-  const descHandler = async () => {
+  const descHandler = () => {
     setIsDescLoading(true);
-    if (isSelectionChecked) {
-      await selectionSort(array, Direction.Descending, setArray);
-    } else {
-      await bubbleSort(array, Direction.Descending, setArray);
-    }
-    setIsDescLoading(false);
+
+    const matrix = isSelectionChecked
+      ? selectionSort(array, Direction.Descending)
+      : bubbleSort(array, Direction.Descending);
+
+    if (!matrix) return setIsDescLoading(false);
+
+    let step = 0;
+    setArray(matrix[step]);
+
+    const timerId = setInterval(() => {
+      if (step < matrix.length - 1) {
+        step++;
+        setArray(matrix[step]);
+      } else {
+        clearInterval(timerId);
+        setIsDescLoading(false);
+      }
+    }, DELAY_IN_MS);
   };
 
   return (
@@ -95,12 +122,14 @@ export const SortingPage: React.FC = () => {
             disabled={isAscLoading || isDescLoading}
           />
         </section>
-        <section className={styles.field}>
+        <ul className={styles.field}>
           {array &&
             array.map((column, index) => (
-              <Column index={column.value} state={column.state} key={index} />
+              <li key={index}>
+                <Column index={column.value} state={column.state} />
+              </li>
             ))}
-        </section>
+        </ul>
       </section>
     </SolutionLayout>
   );
